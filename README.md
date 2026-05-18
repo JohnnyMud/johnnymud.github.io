@@ -1,4 +1,4 @@
-# johnnymud.github.io
+# Johnny Mudawar
 ![Johnny Mudawar](Images/professional_photo.jpg)
 # About Me
 ... Fill in ...

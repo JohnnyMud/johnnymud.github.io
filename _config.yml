@@ -1,5 +1,2 @@
-title: Johnny's homepage
-description: Bookmark this to keep an eye on my project updates!
-remote_theme: pages-themes/tactile@v0.2.0
-plugins:
-- jekyll-remote-theme
+title: Johnny Mudawar
+description: Software, data science, and AI applied to real-world systems.

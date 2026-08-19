@@ -263,6 +263,65 @@ a:focus-visible {
   margin: 0;
 }
 
+.project h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.project .meta {
+  margin: 0.35rem 0 1.15rem;
+}
+
+.snake-embed {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-deep);
+}
+
+.snake-embed iframe {
+  display: block;
+  width: 100%;
+  height: 26.5rem;
+  border: 0;
+  background: var(--bg-deep);
+}
+
+.snake-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(8, 9, 7, 0.62);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.snake-play:hover,
+.snake-play:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.snake-play:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.snake-embed.is-playing .snake-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .footer {
   width: min(42rem, calc(100% - 3rem));
   margin: 6rem auto 0;
@@ -316,5 +375,9 @@ a:focus-visible {
 
   .section {
     padding-top: 4rem;
+  }
+
+  .snake-embed iframe {
+    height: 20.5rem;
   }
 }

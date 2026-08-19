@@ -136,9 +136,32 @@
         </ol>
       </section>
 
-      <section id="projects" class="section">
+      <section id="projects" class="section section-wide">
         <h2>Projects</h2>
-        <p>Section in progress…</p>
+        <article class="project">
+          <h3>Odin Snake</h3>
+          <p>
+            A terminal Snake game written in Odin, compiled to WebAssembly.
+          </p>
+          <p class="meta">
+            WASD to move · R to replay ·
+            <a
+              href="https://github.com/JohnnyMud/odin-snake"
+              rel="noopener noreferrer"
+              target="_blank"
+              >Source</a
+            >
+          </p>
+          <div class="snake-embed" id="snake-embed">
+            <iframe
+              src="snake/"
+              title="Odin Snake"
+              loading="lazy"
+              tabindex="0"
+            ></iframe>
+            <button type="button" class="snake-play">Click to play</button>
+          </div>
+        </article>
       </section>
 
       <section id="writing" class="section">
@@ -170,6 +193,25 @@
       </section>
     </main>
 
+    <script>
+      (function () {
+        const embed = document.getElementById("snake-embed");
+        if (!embed) return;
+        const iframe = embed.querySelector("iframe");
+        const play = embed.querySelector(".snake-play");
+        function activate() {
+          embed.classList.add("is-playing");
+          iframe.focus();
+        }
+        play.addEventListener("click", activate);
+        iframe.addEventListener("focus", function () {
+          embed.classList.add("is-playing");
+        });
+        iframe.addEventListener("blur", function () {
+          embed.classList.remove("is-playing");
+        });
+      })();
+    </script>
     <footer class="footer">
       <p>Johnny Mudawar · San Francisco</p>
       <nav aria-label="Contact">

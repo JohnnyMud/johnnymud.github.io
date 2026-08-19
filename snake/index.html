@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Odin Snake</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-deep: #080907;
+        --text: #e6e3da;
+        --muted: #9a968b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg-deep);
+        color: var(--text);
+        font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo,
+          monospace;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        padding: 1.15rem 1.25rem;
+      }
+
+      #snake {
+        margin: 0;
+        font: inherit;
+        font-size: 0.95rem;
+        line-height: 1.2;
+        white-space: pre;
+      }
+
+      .error {
+        color: var(--muted);
+        font-size: 0.9rem;
+        max-width: 36ch;
+        text-align: center;
+      }
+
+      @media (max-width: 520px) {
+        body {
+          justify-content: start;
+          overflow-x: auto;
+        }
+
+        #snake {
+          font-size: 0.72rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <pre id="snake"></pre>
+    <script src="odin.js"></script>
+    <script>
+      async function main() {
+        const pre = document.getElementById("snake");
+        const mem = new odin.WasmMemoryInterface();
+        const imports = odin.setupDefaultImports(mem);
+        const bytes = await fetch("snake.wasm").then((r) => {
+          if (!r.ok) throw new Error("Could not load snake.wasm");
+          return r.arrayBuffer();
+        });
+        const { instance } = await WebAssembly.instantiate(bytes, imports);
+        const e = instance.exports;
+        mem.setExports(e);
+        mem.setMemory(e.memory);
+
+        const decoder = new TextDecoder();
+        function draw() {
+          const ptr = e.game_board_ptr();
+          const len = e.game_board_len();
+          pre.textContent = decoder.decode(
+            new Uint8Array(e.memory.buffer, ptr, len)
+          );
+        }
+
+        e.game_init();
+        draw();
+
+        window.addEventListener("keydown", (ev) => {
+          if (ev.key.length !== 1) return;
+          if ("wasdrWASDR".includes(ev.key)) {
+            ev.preventDefault();
+          }
+          e.game_keydown(ev.key.charCodeAt(0));
+          draw();
+        });
+
+        setInterval(() => {
+          e.game_tick();
+          draw();
+        }, 100);
+      }
+
+      main().catch(() => {
+        document.body.innerHTML =
+          '<p class="error">Could not load the game. Try opening this page over HTTP.</p>';
+      });
+    </script>
+  </body>
+</html>
